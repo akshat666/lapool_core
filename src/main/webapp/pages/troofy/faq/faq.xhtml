@@ -1,0 +1,182 @@
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:h="http://java.sun.com/jsf/html" 
+      xmlns:p="http://primefaces.org/ui" dir="ltr">
+
+
+        <h:head>
+        <link rel="shortcut icon" type="image/x-icon" href="#{facesContext.externalContext.requestContextPath}/resources/images/favicon.ico"/>
+        <h:outputStylesheet name="css/default.css"/>
+            <title>HOP OR DROP - FAQs</title>
+        </h:head>
+    <h:body>
+        <h:form>
+            <p:layout fullPage="true">
+
+                <p:layoutUnit position="north" size="90">
+                    <p:panelGrid style="width: 100%;text-align: center">
+                        <p:row>
+                            <p:column style="border: 0px;">
+                                <h:link outcome="/default.xhtml?faces-redirect=true">
+                                    <p:graphicImage value="/resources/images/icon_black.png" height="60px">
+                                </p:graphicImage></h:link>
+                            </p:column>
+                        </p:row>
+
+                    </p:panelGrid>
+                </p:layoutUnit>
+
+                <p:layoutUnit position="center" style="overflow-y: scroll">
+                    <p:panelGrid style="margin-left: 50px">
+                        <p:row>
+                            <p:column style="border: 0px">
+                                <h:outputLabel value="FAQs" style="font: bold;font-size: 50px">
+                            </h:outputLabel></p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column style="border: 0px">
+                                <p:spacer height="15">
+                            </p:spacer></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="border: 0px">
+                                <h:outputLabel value="What is HOP OR DROP all about?" style="font: bold;font-size: x-large">
+                            </h:outputLabel></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="border: 0px;font-style: italic">
+                                <b>"Ride-sharing is simple as black and white."</b><br/>
+                                HOP OR DROP is a simple, real-time yet powerful ride-sharing(carpooling) mobile application.<br/>
+                                It connects you to your network of people when traveling to your destination.
+                                <br/><br/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="border: 0px">
+                                <h:outputLabel value="What is a HOP and what is a DROP?" style="font: bold;font-size: x-large">
+                            </h:outputLabel></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="border: 0px;font-style: italic">
+                                When you launch the app, there are two options you can choose from:-<br/>
+                                <b>HOP</b> - Request other users to pick you up for a ride to your destination<br/>
+                                <b>DROP</b> - Pickup and drop a user who has requested for a ride<br/>
+                                <br/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="border: 0px">
+                                <h:outputLabel value="How is it differnt from other ride-sharing applications?" style="font: bold;font-size: x-large">
+                            </h:outputLabel></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="border: 0px;font-style: italic">
+                                  We are a world apart from other apps, for instance :-
+                                  <li>Simple and to the point. No complicated steps, no annoying forms.</li>
+                                  <li>Option to ride with only your own people from your social networks like Facebook,  etc  </li>
+                                  <li>Real time requests - Tap and get a ride</li>
+                                  <li>Safety features like tracking and SOS included</li>
+                                  <li>No sharing of mobile numbers or other personal details</li>
+                                  <li>Women can share with women travelers</li>
+                                  There is more so kindly install the application and see it yourself.<br/><br/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="border: 0px">
+                                <h:outputLabel value="What is a PATH?" style="font: bold;font-size: x-large">
+                            </h:outputLabel></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="border: 0px;font-style: italic">
+                               If you have a vehicle and you are willing to offer drops to other users, you can define your regular fixed "Paths". Example, your "Path" to work or College.
+                               Once you define your "Path", the application will optimize and match other users' HOP requests to your PATH.
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="border: 0px">
+                                <h:outputLabel value="Do I get charged for my trips?" style="font: bold;font-size: x-large">
+                            </h:outputLabel></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="border: 0px;font-style: italic">
+                                   We do not charge our users. The app is free to use.<br/>
+                                   We also encourage our users to offer rides for free or a very minimal amount which covers their fuel costs. This amount can be transacted in cash by the travelers.<br/>
+                                   It is advisable to chat with the travelers (using our inbuilt chat feature) before you board the vehicle, and clarify if any amount will be charged(for splitting the fuel cost etc).<br/>
+                                   <br/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="border: 0px">
+                                <h:outputLabel value="Is it safe?" style="font: bold;font-size: x-large">
+                            </h:outputLabel></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="border: 0px;font-style: italic">
+                                Our goal is to provide the safest platform for ride-sharing for our users. <br/>
+                                <li>Women can ride with women travelers only</li>
+                                <li>We provide "Tracking" feature where you can send your trip's changing location updates to your family or friends in real time.</li>
+                                <li>We also have an emergency SOS feature which will send your location updates to your emergency contacts.</li>
+                                But the truth is nothing can be completely safe in this universe. Be smart and use your common sense when sharing a ride with anyone.<br/>
+                                We recommend you to read our <a href="/pages/troofy/terms/terms.xhtml">terms</a> including the section on safety.
+                                <br/><br/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="border: 0px">
+                                <h:outputLabel value="Are my details shared with other co-passengers?" style="font: bold;font-size: x-large">
+                            </h:outputLabel></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="border: 0px;font-style: italic">
+                                We do not share your details like phone number or age with the co-passengers. <br/>
+                                To communicate with co-passengers, we provide an inbuilt chat feature.<br/>
+                                We recommend you read our <a href="/pages/troofy/privacy/privacy.xhtml">policies</a> for any more information.
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="border: 0px">
+                                <p:spacer height="30px">
+                            </p:spacer></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="border: 0px">
+                                If you have any more questions please drop an email to <b>contact@hopordrop.com</b>
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column style="border: 0px">
+                                <p:spacer height="30px">
+                            </p:spacer></p:column>
+                        </p:row>
+                        
+                    </p:panelGrid>
+
+                </p:layoutUnit>
+                
+                 <p:layoutUnit position="south" size="40">
+
+                    <div style="bottom: 5px;position: absolute;width: 100%;text-align: center;">
+                        <p:commandLink value="Privacy policy" style="font-size: 10px;color: black" action="/pages/troofy/privacy/privacy.xhtml?faces-redirect=true">
+                        <p:spacer width="25px">                   
+                        <p:commandLink value="Terms and conditions" style="font-size: 10px;color: black" action="/pages/troofy/terms/terms.xhtml?faces-redirect=true">
+
+                    </p:commandLink></p:spacer></p:commandLink></div>
+
+                    <div style="position: absolute;right: 10px;bottom: 5px">
+                        <h:outputLink value="http://www.facebook.com/hopordrop" target="_blank">
+                            <p:graphicImage value="/resources/images/facebook.png">
+                        </p:graphicImage></h:outputLink>
+                        <p:spacer width="10px">
+                        <h:outputLink value="http://www.twitter.com/hopordropapp" target="_blank">
+                            <p:graphicImage value="/resources/images/twitter.png">
+                        </p:graphicImage></h:outputLink>
+                    </p:spacer></div>
+                </p:layoutUnit>
+
+
+
+            </p:layout>
+        </h:form>
+    </h:body>
+</html>

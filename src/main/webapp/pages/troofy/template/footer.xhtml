@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:h="http://java.sun.com/jsf/html" 
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:body>
+        <ui:composition>
+            <h:form>
+
+                
+
+                <div style="text-align: center;height: 50px;margin-top: 15px;bottom: 15px" >
+                        
+                  
+
+                    <div style="bottom: 5px;position: absolute;width: 100%;text-align: center;">
+                        <p:commandLink value="Privacy policy" style="font-size: 10px;color: black" 
+                                       action="/pages/troofy/privacy/privacy.xhtml?faces-redirect=true"/>
+                        <p:spacer width="25px"/>                   
+                        <p:commandLink value="Terms and conditions" style="font-size: 10px;color: black" 
+                                       action="/pages/troofy/terms/terms.xhtml?faces-redirect=true"/>
+            
+                    </div>
+
+                    <div style="position: absolute;right: 10px;bottom: 5px">
+                        <h:outputLink value="http://www.facebook.com/hopordrop" target="_blank">
+                            <p:graphicImage value="/resources/images/facebook.png" />
+                        </h:outputLink>
+                        <p:spacer width="10px"/>
+                        <h:outputLink value="http://www.twitter.com/hopordropapp" target="_blank">
+                            <p:graphicImage value="/resources/images/twitter.png" />
+                        </h:outputLink>
+                    </div>
+              
+                    </div>
+                    
+                
+                
+            </h:form>
+        </ui:composition>
+    </h:body>
+</html>

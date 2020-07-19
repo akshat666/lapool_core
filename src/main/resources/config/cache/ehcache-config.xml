@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+         xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd"
+            updateCheck="false">
+
+<!--    <diskStore path="/ehcache/diskstore"/>-->
+    
+<!--    <defaultCache eternal="true"
+                  overflowToDisk="false" memoryStoreEvictionPolicy="LFU" />-->
+                  
+                      <defaultCache
+            maxElementsInMemory="10000"
+            eternal="false"
+            timeToIdleSeconds="120"
+            timeToLiveSeconds="120"
+            overflowToDisk="false"
+            maxElementsOnDisk="10000000"
+            diskPersistent="false"
+            diskExpiryThreadIntervalSeconds="120"
+            memoryStoreEvictionPolicy="LFU"
+    /> 
+    
+    <cache name="com.lapool.model.Token" 
+           maxElementsInMemory="5000000" 
+           eternal="true"
+           overflowToDisk="true" 
+           memoryStoreEvictionPolicy="LFU"
+         
+    />
+
+</ehcache>

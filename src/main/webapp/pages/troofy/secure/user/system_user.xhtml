@@ -1,0 +1,253 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <link rel="icon" type="image/ico" href="/resources/images/favicon.ico"/>
+        <link rel="shortcut icon" type="image/x-icon" href="#{facesContext.externalContext.requestContextPath}/resources/images/favicon.ico"/>
+        <h:outputStylesheet name="css/default.css" />
+        <title>HOP OR DROP - Channels</title>
+    </h:head>
+    <h:body id="body">
+
+        <p:layout fullPage="true">
+
+            <p:layoutUnit position="north" size="90">
+                <p:panelGrid style="width: 100%;text-align: center">
+                    <p:row >
+                        <p:column style="border: 0px;">
+                            <h:link outcome="/default.xhtml?faces-redirect=true">
+                                <p:graphicImage value="/resources/images/icon_black.png"  height="60px"/>
+                            </h:link>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="west" style="width: 10%">
+                <h:form id="menuForm">
+                    <p:growl id="growl" autoUpdate="false" showDetail="true"/>
+
+                    <p:menu>
+                        <p:submenu label="Home">
+                            <p:menuitem value="Home"  icon="ui-icon-home" action="home?faces-redirect=true"/>
+                        </p:submenu>
+                        <p:submenu label="System" rendered="#{privilegeBean.viewSystemUserPriviledged}">
+                            <p:menuitem value="Add/Edit System User"  icon="ui-icon-disk" action="system_user?faces-redirect=true"/>
+                        </p:submenu>
+                        <p:submenu label="Channel" rendered="#{privilegeBean.viewChannelPriviledged}">
+                            <p:menuitem value="Add/Edit Channel" ajax="false" icon="ui-icon-disk" action="channel_edit?faces-redirect=true"/>
+                        </p:submenu>
+                        <p:submenu label="Settings">
+                            <p:menuitem actionListener="#{systemUserBean.logout}" ajax="false" value="Logout" icon="ui-icon-power"/>
+                        </p:submenu>
+                    </p:menu>
+
+                </h:form>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="center" >
+
+                <p:growl id="growl" sticky="true" autoUpdate="true" showDetail="true" life="3000" for="growlChn"/>
+
+                <p:commandButton value="Add New System user" onclick="PF('dlg_new_usr').show();" title="New User"/>
+                
+                <p:dialog header="New User" id="addUsrDlg" widgetVar="dlg_new_usr" modal="true" resizable="false" appendTo="@(body)">
+                    <h:form id="newUsrForm">
+                        <h:panelGrid columns="3" cellpadding="5">
+                            <h:outputLabel for="name" value="Name:" />
+                            <p:inputText id="name" 
+                                         maxlength="100"
+                                         validatorMessage="Error"
+                                         value="#{editSystemUserBean.newSystemUser.name}" 
+                                         required="true" label="Name" />
+                            <h:message for="name"/>
+
+                            <h:outputLabel for="email" value="Email" />
+                            <p:inputText id="email" 
+                                         value="#{editSystemUserBean.newSystemUser.email}" 
+                                         required="true" 
+                                         validatorMessage="Invalid Email"
+                                         requiredMessage="Please enter your email address."
+                                         maxlength="100"
+                                         label="Email" >
+                                         <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                            </p:inputText>
+                            <h:message for="email"/>
+
+                            <h:outputLabel for="phone" value="Phone" />
+                            <p:inputText id="phone" 
+                                         value="#{editSystemUserBean.newSystemUser.phone}" 
+                                         required="true" 
+                                         maxlength="20"
+                                         label="Phone" />
+                            <h:message for="phone"/>
+
+                            <h:outputLabel for="username" value="Username" />
+                            <p:inputText id="username" 
+                                         value="#{editSystemUserBean.newSystemUser.username}" 
+                                         maxlength="50"
+                                         required="true" 
+                                         label="Username" />
+                            <h:message for="username"/>
+
+                            <h:outputLabel for="password" value="Password" />
+                            <p:password id="password" 
+                                        value="#{editSystemUserBean.newSystemUser.password}" 
+                                        required="true" 
+                                        maxlength="100"
+                                        label="Password" />
+                            <h:message for="password"/>
+
+                            <h:outputLabel for="channel" value="Channel" />
+                            <p:autoComplete value="#{editSystemUserBean.newUserChannel}" 
+                                            completeMethod="#{editSystemUserBean.completeText}"
+                                            var="channel"
+                                            minQueryLength="2"
+                                            itemLabel="#{channel.name}"
+                                            itemValue="#{channel}"
+                                            converter="#{channelConverter}"
+                                            forceSelection="true"
+                                            id="channel"
+                                            />
+                            <h:message for="channel"/>
+                            
+                            <h:outputLabel for="account" value="Account" />
+                            <p:autoComplete value="#{editSystemUserBean.newUserAccount}" 
+                                            completeMethod="#{editSystemUserBean.completeAccText}"
+                                            var="account"
+                                            minQueryLength="2"
+                                            itemLabel="#{account.description}"
+                                            itemValue="#{account}"
+                                            maxlength="20"
+                                            converter="#{accountConverter}"
+                                            forceSelection="true"
+                                            id="account"
+                                            />
+                            <h:message for="account"/>
+                            
+                            <h:outputLabel for="status" value="Status" />
+                            <p:selectOneMenu id="status" value="#{editSystemUserBean.newSystemUser.status}" style="width:150px">
+                                <f:selectItems value="#{editSystemUserBean.userStatues}" 
+                                               var="status"
+                                               itemLabel="#{status}"
+                                               itemValue="#{editSystemUserBean.fetchSysUserStatusAsInt(status)}"
+                                               />
+                            </p:selectOneMenu>
+                            <h:message for="status"/>
+
+                            <f:facet name="footer">
+                                <p:commandButton value="Save" 
+                                                 id="savebtn"
+                                                 update=":tableForm:users newUsrForm"
+                                                 styleClass="ui-priority-primary"
+                                                 actionListener="#{editSystemUserBean.addNewSystemUser}"                                                />
+                            </f:facet>  
+                        </h:panelGrid>
+                    </h:form>
+                </p:dialog>
+
+                <p:separator style="width: 100%;height: 6px"/>
+
+                <h:form id="tableForm">
+
+                    <p:growl id="msgs" showDetail="true"/>
+
+                    <p:dataTable id="users" 
+                                 var="user" 
+                                 value="#{editSystemUserBean.lazyDataModel}"
+                                 editable="true" 
+                                 paginator="true"
+                                 rows="10"
+                                 rowsPerPageTemplate="5,10"
+                                 style="margin-bottom:20px"
+                                 lazy="true"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                                     >
+                        <f:facet name="header">
+                            System users
+                        </f:facet>
+
+                        <p:ajax event="rowEdit" listener="#{editSystemUserBean.onRowEdit}" update=":tableForm:msgs :tableForm:users" />
+                        <p:ajax event="rowEditCancel" listener="#{editSystemUserBean.onRowCancel}" update=":tableForm:msgs" />
+
+                        <p:column headerText="Name" filterBy="#{user.name}" sortBy="#{user.name}">
+                            <p:cellEditor>
+                                <f:facet name="output"><h:outputText value="#{user.name}" /></f:facet>
+                                <f:facet name="input"><p:inputText id="modelInput" value="#{user.name}" label="Name" style="width:100%" maxlength="100" required="true"/></f:facet>
+                            </p:cellEditor>
+                        </p:column>
+
+                        <p:column headerText="Email" filterBy="#{user.email}" sortBy="#{user.email}">
+                            <p:cellEditor>
+                                <f:facet name="output"><h:outputText value="#{user.email}" /></f:facet>
+                                <f:facet name="input"><p:inputText value="#{user.email}" style="width:100%" label="Domain" maxlength="50" required="true"/></f:facet>
+                            </p:cellEditor>
+                        </p:column>
+
+                        <p:column headerText="Phone">
+
+                            <p:cellEditor>
+                                <f:facet name="output"><h:outputText value="#{user.phone}" /></f:facet>
+                                <f:facet name="input"><p:inputText value="#{user.phone}" style="width:100%" label="Description" maxlength="250" required="true"/></f:facet>
+                            </p:cellEditor>
+
+                        </p:column>
+                        
+                        <p:column headerText="Account">
+                            <f:facet name="output"><h:outputText value="#{user.account.description}" /></f:facet>
+                        </p:column>
+
+                        <p:column headerText="Status">
+                            <p:cellEditor>
+                                <f:facet name="output"><h:outputText value="#{editSystemUserBean.fetchSysUserStatusAsString(user.status)}" /></f:facet>
+                                <f:facet name="input">
+                                    <h:selectOneMenu value="#{user.status}" style="width:100%">
+                                        <f:selectItems value="#{editSystemUserBean.userStatues}" 
+                                                       var="status" 
+                                                       itemLabel="#{status}" 
+                                                       itemValue="#{editSystemUserBean.fetchSysUserStatusAsInt(status)}" />
+                                    </h:selectOneMenu>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+
+                        <p:column style="width:32px">
+                            <p:rowEditor />
+                        </p:column>
+                        
+                        
+                    </p:dataTable>
+
+                </h:form>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="south" size="36" closable="true">
+
+                <div style="bottom: 5px;position: absolute;width: 100%;text-align: center;">
+                    <p:commandLink value="Privacy policy" style="font-size: 10px;color: black" 
+                                   action="/pages/lapool/privacy/privacy.xhtml?faces-redirect=true"/>
+                    <p:spacer width="25px"/>                   
+                    <p:commandLink value="Terms and conditions" style="font-size: 10px;color: black" 
+                                   action="/pages/lapool/terms/terms.xhtml?faces-redirect=true"/>
+                </div>
+
+                <div style="position: absolute;right: 10px;bottom: 5px">
+                    <h:outputLink value="http://www.facebook.com/hopordrop" target="_blank">
+                        <p:graphicImage value="/resources/images/facebook.png" />
+                    </h:outputLink>
+                    <p:spacer width="10px"/>
+                    <h:outputLink value="http://www.twitter.com/hopordropapp" target="_blank">
+                        <p:graphicImage value="/resources/images/twitter.png" />
+                    </h:outputLink>
+                </div>
+            </p:layoutUnit>
+
+
+        </p:layout>
+
+
+    </h:body>
+</html>

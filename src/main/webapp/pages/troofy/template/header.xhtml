@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:h="http://java.sun.com/jsf/html" 
+      xmlns:p="http://primefaces.org/ui">
+
+
+    <h:body>  
+        <ui:composition>
+
+            <h:form>
+                
+                <div style="height: 120px;margin-left: 50px;margin-right: 50px;margin-top: 15px;margin-bottom: 15px;text-align: center" 
+                     >
+                    
+                        <p:commandLink action="/pages/troofy/main.xhtml?faces-redirect=true">
+                                <p:graphicImage value="/resources/images/icon_black.png" style="margin-left: 10px;border: none !important"/>
+                        </p:commandLink>
+                        
+                    
+                        <p:commandButton action="cartDetails?faces-redirect=true" 
+                                         style="float: right;margin-right: 10px;margin-top: 10px;border-radius: 10px"
+                                         id="cartPanel"
+                                         rendered="#{sessionBean.cartItems.size() > 0}"
+                                         value="Cart items : #{sessionBean.cartItems.size() > 0 ? sessionBean.cartItems.size():'0'}"
+                                         />
+                
+                </div>
+            </h:form>
+
+        </ui:composition>
+    </h:body>
+</html>

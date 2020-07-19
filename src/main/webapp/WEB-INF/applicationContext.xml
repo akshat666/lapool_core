@@ -1,0 +1,15 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+    
+
+	<!-- Database Configuration -->
+	<import resource="classes/config/spring/beans/DataSource.xml"/>
+	<import resource="classes/config/spring/beans/HibernateSessionFactory.xml"/>
+ 
+	<!-- Beans Declaration -->
+	<import resource="classes/com/lapool/spring/PoolBean.xml"/>
+        <import resource="classes/com/lapool/spring/SystemBean.xml"/>
+        <import resource="classes/com/lapool/spring/SpringMail.xml"/>
+</beans>

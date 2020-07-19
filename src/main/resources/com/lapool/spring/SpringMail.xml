@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+">
+
+    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="host" value="${app.email.host}" />
+        <property name="port" value="${app.email.port}" />
+        <property name="username" value="${app.email.username}" />
+        <property name="password" value="${app.email.password}" />
+
+        <property name="javaMailProperties">
+            <props>
+                <prop key="mail.smtp.auth">true</prop>
+                <prop key="mail.smtp.starttls.enable">true</prop>
+            </props>
+        </property>
+    </bean>
+	
+    <bean id="mailEngine" class="com.lapool.util.MailEngine">
+        <property name="mailSender" ref="mailSender" />
+        <property name="simpleMailMessage" ref="customeMailMessage" />
+    </bean>
+	
+    <bean id="customeMailMessage"
+          class="org.springframework.mail.SimpleMailMessage">
+
+        <property name="from" value="do-not-reply@hopordrop.com" />
+        <property name="subject" value="[HOP or DROP]" />
+        <property name="text">
+            <value>
+		<![CDATA[
+Dear %s,
+
+                    %s
+
+Best wishes,
+[HOP OR DROP] Team.
+		]]>
+            </value>
+        </property>
+    </bean>
+
+</beans>

@@ -1,0 +1,100 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <link rel="icon" type="image/ico" href="/resources/images/favicon.ico"/>
+        <link rel="shortcut icon" type="image/x-icon" href="#{facesContext.externalContext.requestContextPath}/resources/images/favicon.ico"/>
+        <h:outputStylesheet name="css/default.css" />
+        <title>HOP OR DROP - Home</title>
+    </h:head>
+    <h:body>
+
+        <p:layout fullPage="true">
+
+            <p:layoutUnit position="north" size="90">
+                <p:panelGrid style="width: 100%;text-align: center">
+                    <p:row >
+                        <p:column style="border: 0px;">
+                            <h:link outcome="/default.xhtml?faces-redirect=true">
+                                <p:graphicImage value="/resources/images/icon_black.png"  height="60px"/>
+                            </h:link>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="west">
+                <h:form id="menuForm">
+                    <p:growl id="growl" autoUpdate="true" showDetail="true"/>
+
+                    <p:menu>
+                        <p:submenu label="Home">
+                            <p:menuitem value="Home"  icon="ui-icon-home" action="home?faces-redirect=true"/>
+                        </p:submenu>
+                        <p:submenu label="System" rendered="#{privilegeBean.viewSystemUserPriviledged}">
+                            <p:menuitem value="Add/Edit System User"  icon="ui-icon-disk" action="system_user?faces-redirect=true"/>
+                        </p:submenu>
+                        <p:submenu label="Channel" rendered="#{privilegeBean.viewChannelPriviledged}">
+                            <p:menuitem value="Add/Edit Channel" ajax="false" icon="ui-icon-disk" action="channel_edit?faces-redirect=true"/>
+                        </p:submenu>
+                        <p:submenu label="Settings">
+                            <p:menuitem actionListener="#{systemUserBean.logout()}" value="Logout" icon="ui-icon-power"/>
+                        </p:submenu>
+
+                    </p:menu>
+                </h:form>
+            </p:layoutUnit>
+            <p:layoutUnit position="center">
+
+                <div style="width: 50%;margin: 0 auto;">
+
+                    <p:panel>
+                        <p:outputLabel value="Welcome "  style="font-size: xx-large"/>
+                        <p:outputLabel style="font-size: xx-large"
+                                       value="#{sessionBean.systemUser.name} !"/>
+                    </p:panel> 
+
+
+                    <p:panel>
+                        <p:commandButton value="Change password" onclick="PF('dlg_new_pwd').show();"/>
+                    </p:panel>
+                    <p:dialog header="Change Password" widgetVar="dlg_new_pwd" modal="true" resizable="false" appendTo="@(body)">
+                        <h:form id="newPwdForm">
+                            <h:panelGrid columns="2" cellpadding="5">
+                                <h:outputLabel for="oldPwd" value="Old Password:" />
+                                <p:password id="oldPwd" value="#{systemUserBean.oldPwd}" required="true" label="Old password" maxlength="50" />
+
+                                <h:outputLabel for="newPwd1" value="New Password:" />
+                                <p:password id="newPwd1" 
+                                            match="newPwd2" 
+                                            value="#{systemUserBean.newPwd}" 
+                                            required="true" 
+                                            label="New Password" 
+                                            maxlength="50"
+                                            feedback="true"/>
+
+                                <h:outputLabel for="newPwd2" value="Re-type Password:" />
+                                <p:password id="newPwd2" value="#{systemUserBean.newPwd}" required="true" label="Re-Typed New Password" maxlength="50"/>
+
+                                <p:commandButton value="Save"
+                                                 icon="ui-icon-disk"
+                                                 style="width: 100%"
+                                                 onsuccess="PF('dlg_new_pwd').hide();"
+                                                 actionListener="#{systemUserBean.updatePassword}"
+                                                 />
+                            </h:panelGrid>
+
+
+                        </h:form>
+                    </p:dialog>
+
+                </div>
+            </p:layoutUnit>
+
+        </p:layout>
+
+
+    </h:body>
+</html>

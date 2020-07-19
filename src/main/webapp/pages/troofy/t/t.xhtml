@@ -1,0 +1,128 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" xmlns:f="http://xmlns.jcp.org/jsf/core" dir="ltr"><head><script type="text/javascript" charset="UTF-8" src="http://maps.google.com/maps-api-v3/api/js/28/7/common.js"></script><script type="text/javascript" charset="UTF-8" src="http://maps.google.com/maps-api-v3/api/js/28/7/util.js"></script><script type="text/javascript" charset="UTF-8" src="http://maps.google.com/maps-api-v3/api/js/28/7/stats.js"></script><script type="text/javascript" charset="UTF-8" src="http://maps.googleapis.com/maps/api/js/AuthenticationService.Authenticate?1sabout%3Ablank&amp;callback=_xdc_._plzwrg&amp;token=14601"></script></head><body contenteditable="true"><h:head>
+        <!-- Load app.properties file from Spring context -->
+        <f:loadBundle basename="app" var="app">
+        <h:outputText value="#{app['app.google.map.js.api.key']}">
+        <script src="http://maps.google.com/maps/api/js?key=#{app['app.google.map.js.api.key']}" type="text/javascript" style=""></script>
+        <link rel="icon" type="image/ico" href="/resources/images/favicon.ico">
+        <link rel="shortcut icon" type="image/x-icon" href="#{facesContext.externalContext.requestContextPath}/resources/images/favicon.ico">
+        <h:outputStylesheet name="css/default.css">
+        <title>HOP OR DROP - TRACK!</title>
+    </h:outputStylesheet></h:outputText></f:loadbundle></h:head>
+    <h:body>
+        
+
+        <p:layout fullPage="true">
+
+            <p:layoutUnit position="north" size="90">
+                <p:panelGrid style="width: 100%;text-align: center">
+                    <p:row>
+                        <p:column style="border: 0px;">
+                            <h:link outcome="/default.xhtml?faces-redirect=true">
+                                <p:graphicImage value="/resources/images/icon_black.png" height="30px">
+                            </p:graphicImage></h:link>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>
+                          
+                                <p:outputLabel value="TRACKING TRIP" style="font-size: large;font-weight: bolder;">
+                             
+                        </p:outputLabel></p:column>
+                    </p:row>
+                </p:panelGrid>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="west" maxSize="300" closable="false">
+                <p:panel>
+
+                    <p:panel style="background: #FFA500">
+
+                        <p:graphicImage value="http://graph.facebook.com/#{trackBean.tripDetails.hopperProviderID}/picture?type=large">
+                        <p:outputLabel value="#{trackBean.tripDetails.hopperName} (#{trackBean.tripDetails.hopperSex})" style="font-size: large;text-transform: uppercase;font-weight: bold"><br>
+                        <p:outputLabel value="(REQUESTED A HOP)"><br><br>
+                        <p:outputLabel value="FROM - " style="font-weight: bold"><p:outputLabel value="#{trackBean.tripDetails.pickAddress}" style="font-style: italic"><br>
+                        <p:outputLabel value="TO - " style="font-weight: bold"><p:outputLabel value="#{trackBean.tripDetails.dropAddress}" style="font-style: italic"><br>
+
+                        <p:outputLabel value="AT - " style="font-weight: bold">
+                        <p:outputLabel value="#{trackBean.tripDetails.pickCreatedAt}">
+                            <f:convertDateTime pattern="dd MMM yyyy HH:mm:sss">
+                        </f:convertDateTime></p:outputLabel><br>
+
+                    </p:outputLabel></p:outputLabel></p:outputLabel></p:outputLabel></p:outputLabel></p:outputLabel></p:outputLabel></p:graphicImage></p:panel>
+                    <p:spacer height="6">
+
+                </p:spacer></p:panel>
+
+            </p:layoutUnit>
+
+            <p:layoutUnit position="east">
+                <p:panel>
+                    <p:panel style="background: #4BED00;width: 100%">
+                        <p:graphicImage value="http://graph.facebook.com/#{trackBean.tripDetails.dropperProviderID}/picture?type=large">
+
+                        <p:outputLabel value="#{trackBean.tripDetails.dropperName} (#{trackBean.tripDetails.dropperSex})" style="font-size: large;text-transform: uppercase;font-weight: bold"><br>
+                        <p:outputLabel value="(ACCEPTED THE REQUEST)"><br><br>
+                        <p:outputLabel value="AT - " style="font-weight: bold">
+                        <p:outputLabel value="#{trackBean.tripDetails.tripStartTime}">
+                            <f:convertDateTime pattern="dd MMM yyyy HH:mm:sss">
+                        </f:convertDateTime></p:outputLabel><br>
+
+
+                    </p:outputLabel></p:outputLabel></p:outputLabel></p:graphicImage></p:panel>
+
+                </p:panel>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="center">
+
+                <p:panelGrid style="text-align: center">
+                    <p:row style="text-align: center">
+                        <p:column style="text-align: center">
+                            <h:form>
+
+                    <p:gmap id="map" center="#{trackBean.tripDetails.pickupLat} , #{trackBean.tripDetails.pickupLng}" zoom="12" type="ROADMAP" style="width:99%;height:90%;position: absolute" model="#{trackBean.map}">
+                        <p:ajax event="overlaySelect" listener="#{trackBean.onMarkerSelect}">
+                        <p:gmapInfoWindow id="infoWindow">
+                            <p:outputPanel style="text-align: center; display: block; margin: auto">
+                                <h:outputText value="#{trackBean.marker.title}">
+                            </h:outputText></p:outputPanel>
+                        </p:gmapInfoWindow>
+                    </p:ajax></p:gmap>
+
+                    <p:commandButton value="Refresh Locations" actionListener="#{trackBean.updateMap}" update="map" style="position: absolute; right: 50px; top: 15px">
+
+                    <f:metadata>
+                        <f:viewParam name="j" value="#{trackBean.q}">
+                        <f:viewAction action="#{trackBean.init}">
+                    </f:viewaction></f:viewparam></f:metadata>
+                    </p:commandButton></h:form>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+                
+                
+            </p:layoutUnit>
+
+            <p:layoutUnit position="south" size="60">
+
+                <div style="bottom: 5px;position: absolute;width: 100%;text-align: center;">
+                    <p:commandLink value="Privacy policy" style="font-size: 10px;color: black" action="/pages/lapool/privacy/privacy.xhtml?faces-redirect=true">
+                    <p:spacer width="25px">                   
+                    <p:commandLink value="Terms and conditions" style="font-size: 10px;color: black" action="/pages/lapool/terms/terms.xhtml?faces-redirect=true">
+                </p:commandLink></p:spacer></p:commandLink></div>
+
+                <div style="position: absolute;right: 10px;bottom: 5px">
+                    <h:outputLink value="http://www.facebook.com/hopordrop" target="_blank">
+                        <p:graphicImage value="/resources/images/facebook.png">
+                    </p:graphicImage></h:outputLink>
+                    <p:spacer width="10px">
+                    <h:outputLink value="http://www.twitter.com/hopordropapp" target="_blank">
+                        <p:graphicImage value="/resources/images/twitter.png">
+                    </p:graphicImage></h:outputLink>
+                </p:spacer></div>
+            </p:layoutUnit>
+
+        </p:layout>
+
+    </h:body>
+</body></html>

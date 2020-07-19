@@ -1,0 +1,111 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <link rel="icon" type="image/ico" href="/resources/images/favicon.ico"/>
+        <link rel="shortcut icon" type="image/x-icon" href="#{facesContext.externalContext.requestContextPath}/resources/images/favicon.ico"/>
+        <h:outputStylesheet name="css/default.css" />
+        <title>HOP OR DROP - Login</title>
+    </h:head>
+    <h:body>
+
+        <p:layout fullPage="true">
+
+            <p:layoutUnit position="north" size="90">
+                <p:panelGrid style="width: 100%;text-align: center">
+                    <p:row >
+                        <p:column style="border: 0px;">
+                            <h:link outcome="/default.xhtml?faces-redirect=true">
+                                <p:graphicImage value="/resources/images/icon_black.png"  height="60px"/>
+                            </h:link>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="center">
+                <div style="width: 30%;margin: 0 auto;margin-top: 6%">
+                    <h:form>
+                        <p:growl  autoUpdate="true" showDetail="true"/>
+
+                        <div style="width: 100%; text-align: center">
+                            <p:panelGrid >
+                                <p:row>
+                                    <p:column style="border: 0px;">
+                                        <h:outputLabel value="Account"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:inputText value="#{loginBean.account}"
+                                                     label="account"
+                                                     autocomplete="false"
+                                                     required="true"
+                                                     maxlength="8"
+                                                     validatorMessage="Enter a valid account"
+                                                     />
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column>
+                                        <h:outputLabel value="username"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:inputText value="#{loginBean.userName}"
+                                                     label="username"
+                                                     maxlength="25"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column>
+                                        <h:outputLabel value="password"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:password value="#{loginBean.password}"
+                                                    label="password"
+                                                    maxlength="50"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column colspan="2" style="border: 0px;">
+                                        <p:commandButton action="#{loginBean.loginUser}" 
+                                                         style="width: 100%"
+                                                         value="Login"/>
+                                    </p:column>
+                                </p:row>
+
+
+
+                            </p:panelGrid>
+                        </div>
+                    </h:form>
+                </div>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="south" size="60">
+
+                <div style="bottom: 5px;position: absolute;width: 100%;text-align: center;">
+                    <p:commandLink value="Privacy policy" style="font-size: 10px;color: black" 
+                                   action="/pages/lapool/privacy/privacy.xhtml?faces-redirect=true"/>
+                    <p:spacer width="25px"/>                   
+                    <p:commandLink value="Terms and conditions" style="font-size: 10px;color: black" 
+                                   action="/pages/lapool/terms/terms.xhtml?faces-redirect=true"/>
+                </div>
+
+                <div style="position: absolute;right: 10px;bottom: 5px">
+                    <h:outputLink value="http://www.facebook.com/hopordrop" target="_blank">
+                        <p:graphicImage value="/resources/images/facebook.png" />
+                    </h:outputLink>
+                    <p:spacer width="10px"/>
+                    <h:outputLink value="http://www.twitter.com/hopordropapp" target="_blank">
+                        <p:graphicImage value="/resources/images/twitter.png" />
+                    </h:outputLink>
+                </div>
+            </p:layoutUnit>
+
+
+        </p:layout>
+
+
+    </h:body>
+</html>

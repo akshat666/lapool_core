@@ -1,0 +1,50 @@
+.ui-widget, .ui-widget .ui-widget {
+    font-size: 95%;
+}
+
+.ui-layout-pane-north.ui-widget-content {
+    border: 0pt none !important;
+}       
+.ui-layout-pane-center.ui-widget-content {
+    border: 0pt none !important;
+}       
+.ui-layout-pane-south.ui-widget-content {
+    border: 0pt none !important;
+}
+.ui-layout-pane-east.ui-widget-content {
+    border: 0pt none !important;
+}
+/** For PanelGrid border*/
+.ui-widget-content {
+    border: 0pt none !important;
+}
+.ui-datagrid-column.ui-datagrid-content{
+    border: 0pt none !important;
+}
+
+.ui-progressbar {
+    background-color: #ffffff  !important;
+    background-image: none;
+}
+
+.ui-progressbar .ui-widget-header {
+    background: deeppink !important;
+    
+}
+
+
+.ui-panelgrid td{
+    border: 0px !important;
+}
+
+
+
+
+.ui-selectonemenu-panel .ui-selectonemenu-items-wrapper{
+    background: white;
+}
+
+.ui-dt-c{
+    font-size: 16px;
+}
+

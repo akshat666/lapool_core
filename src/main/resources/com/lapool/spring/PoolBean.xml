@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/context  
+        http://www.springframework.org/schema/context/spring-context-3.0.xsd"
+>
+    <context:property-placeholder location="classpath:app.properties" ignore-unresolvable="true"/>
+    <context:component-scan base-package="com.lapool"/>
+        
+    <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
+
+ 
+    <bean id="userBO" class="com.lapool.bo.impl.UserBOimpl" >
+        <property name="oneSignalAppID" value="${app.onesignal.appid}"/>
+        <property name="oneSignalRESTClient" ref="oneSignalRESTClient" />
+        <property name="userDAO" ref="userDAO" />
+        <property name="poolDAO" ref="poolDAO" />
+        <property name="userRestClient" ref="userRestClient" />
+    </bean>
+    
+    <bean id="networkBO" class="com.lapool.bo.impl.NetworkBOimpl">
+        <property name="networkDAO" ref="networkDAO" />
+        <property name="mailEngine" ref="mailEngine"/>
+        <property name="baseURL" value="${app.rest.baseurl}"/>
+        <property name="verifyEmailURL" value="${app.rest.email.verify.url}"/>
+    </bean>
+    
+    <bean id="pushBO" class="com.lapool.bo.impl.PushBOimpl">
+        <property name="oneSignalAppID" value="${app.onesignal.appid}"/>
+        <property name="oneSignalRESTClient" ref="oneSignalRESTClient" />
+    </bean>
+    
+    <bean id="userDAO"
+          class="com.lapool.dao.impl.UserDAOimpl" >
+        <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+    <bean id="networkDAO"
+          class="com.lapool.dao.impl.NetworkDAOimpl" >
+        <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+        
+    <bean id="userRestClient" class="com.lapool.client.UserRestClient" >
+        <property name="fbGraphURL" value="${app.fb.graph.url}"/>
+    </bean>
+        
+    <bean id="oneSignalRESTClient" class="com.lapool.client.OneSignalRESTClient" >
+        <property name="oneSignalAppID" value="${app.onesignal.appid}"/>
+        <property name="oneSignalRestApiKey" value="${app.onesignal.rest.api.key}"/>
+        <property name="onesignalNotificationURL" value="${app.onesignal.notification.url}"/>
+    </bean>
+
+    <bean id="poolBO" class="com.lapool.bo.impl.PoolBOimpl" >
+        <property name="oneSignalAppID" value="${app.onesignal.appid}"/>
+        <property name="baseURL" value="${app.rest.baseurl}"/>
+        <property name="poolDAO" ref="poolDAO" />
+        <property name="userDAO" ref="userDAO" />
+        <property name="networkDAO" ref="networkDAO" />
+        <property name="pushBO" ref="pushBO" />
+        <property name="poolExtBO" ref="poolExtBO" />
+        <property name="userRestClient" ref="userRestClient" />
+        <property name="oneSignalRESTClient" ref="oneSignalRESTClient" />
+    </bean>
+    <bean id="poolDAO"
+          class="com.lapool.dao.impl.PoolDAOimpl" >
+        <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+    
+    <bean id="poolExtDAO"
+          class="com.lapool.dao.impl.PoolExtDAOimpl" >
+        <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+    
+    <bean id="poolExtBO" class="com.lapool.bo.impl.PoolExtBOimpl" >
+        <property name="poolDAO" ref="poolDAO" />
+        <property name="userDAO" ref="userDAO"/>
+        <property name="pushBO" ref="pushBO" />
+        <property name="poolExtDAO" ref="poolExtDAO" />
+    </bean>
+    
+    <bean id="userExtBO" class="com.lapool.bo.impl.UserExtBOimpl" >
+        <property name="appSecret" value="${app.fb.appsecret}"/>
+        <property name="userRestClient" ref="userRestClient" />
+        <property name="userDAO" ref="userDAO" />
+        <property name="poolExtDAO" ref="poolExtDAO" />
+        <property name="poolBO" ref="poolBO" />
+    </bean>
+    
+
+</beans>

@@ -1,0 +1,143 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <script src="http://maps.google.com/maps/api/js?key=#{app['app.google.map.js.api.key']}"
+        type="text/javascript"></script>
+        <link rel="icon" type="image/ico" href="/resources/images/favicon.ico"/>
+        <link rel="shortcut icon" type="image/x-icon" href="#{facesContext.externalContext.requestContextPath}/resources/images/favicon.ico"/>
+        <h:outputStylesheet name="css/default.css" />
+        <title>HOP OR DROP - ALERT!</title>
+    </h:head>
+    <h:body>
+
+        <p:layout fullPage="true">
+
+            <p:layoutUnit position="north" size="110" >
+                <p:panelGrid style="width: 100%;text-align: center">
+                    <p:row >
+                        <p:column style="border: 0px;">
+                            <h:link outcome="/default.xhtml?faces-redirect=true">
+                                <p:graphicImage value="/resources/images/icon_black.png"  height="30px"/>
+                            </h:link>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>
+
+                            <p:outputLabel value="ALERT triggered by #{alertBean.alertDetails.alertedByName}!" 
+                                           style="color: red;font-size: large;font-weight: bolder;" 
+                                           />
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="west" maxSize="300" closable="false" visible="#{alertBean.alertDetails.tripDetails.hopperID > 0}">
+                <p:panel>
+                    <p:panel style="background: #FFA500">
+
+                        <p:graphicImage value="http://graph.facebook.com/#{alertBean.alertDetails.tripDetails.hopperProviderID}/picture?type=large" 
+                                        rendered="#{alertBean.alertDetails.tripDetails.hopperProviderType == 100}"/>
+                        <p:outputLabel value="#{alertBean.alertDetails.tripDetails.hopperName} (#{alertBean.alertDetails.tripDetails.hopperSex})" 
+                                       style="font-size: large;text-transform: uppercase;font-weight: bold"/><br/>
+                        <p:outputLabel value="(REQUESTED A HOP)" /><br/><br/>
+                        <p:outputLabel value="FROM - " style="font-weight: bold"/><p:outputLabel value="#{alertBean.alertDetails.tripDetails.pickAddress}" style="font-style: italic"/><br/>
+                        <p:outputLabel value="TO - " style="font-weight: bold"/><p:outputLabel value="#{alertBean.alertDetails.tripDetails.dropAddress}" style="font-style: italic"/><br/>
+
+                        <p:outputLabel value="AT - " style="font-weight: bold"/>
+                        <p:outputLabel value="#{alertBean.alertDetails.tripDetails.pickCreatedAt}">
+                            <f:convertDateTime pattern="dd MMM yyyy HH:mm:sss" />
+                        </p:outputLabel><br/>
+                        <p:outputLabel value="PHONE : " style="font-weight: bold"/><p:outputLabel value="#{alertBean.alertDetails.tripDetails.hopperPhone}" style="font-style: italic"/><br/>
+
+                    </p:panel>
+
+                </p:panel>
+
+
+
+            </p:layoutUnit>
+
+            <p:layoutUnit position="east" maxSize="300" closable="false" 
+                          visible="#{alertBean.alertDetails.tripDetails.dropperID > 0}">
+                <p:panel>
+                    <p:panel style="background: #4BED00;width:  100%" >
+                        <p:graphicImage value="http://graph.facebook.com/#{alertBean.alertDetails.tripDetails.dropperProviderID}/picture?type=large"
+                                        rendered="#{alertBean.alertDetails.tripDetails.dropperProviderType == 100}"/>
+
+                        <p:outputLabel value="#{alertBean.alertDetails.tripDetails.dropperName} (#{alertBean.alertDetails.tripDetails.dropperSex})" 
+                                       style="font-size: large;text-transform: uppercase;font-weight: bold"/><br/>
+                        <p:outputLabel value="(ACCEPTED THE REQUEST)" /><br/><br/>
+                        <p:outputLabel value="AT - " style="font-weight: bold"/>
+                        <p:outputLabel value="#{alertBean.alertDetails.tripDetails.tripStartTime}">
+                            <f:convertDateTime pattern="dd MMM yyyy HH:mm:sss" />
+                        </p:outputLabel><br/>
+                        <p:outputLabel value="PHONE : " style="font-weight: bold"/><p:outputLabel value="#{alertBean.alertDetails.tripDetails.dropperPhone}" style="font-style: italic"/><br/>
+
+
+
+                    </p:panel>
+
+                </p:panel>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="center">
+
+                <p:panelGrid style="text-align: center">
+                    <p:row style="text-align: center">
+                        <p:column style="text-align: center">
+                            <h:form>
+
+                                <p:gmap id="map2" center="#{alertBean.alertDetails.alertAtLat} , #{alertBean.alertDetails.alertAtLng}" 
+                                        zoom="12" type="ROADMAP" style="width:99%;height:90%;position: absolute"   
+                                        model="#{alertBean.map}">
+                                    <p:ajax event="overlaySelect" listener="#{alertBean.onMarkerSelect}" />
+                                    <p:gmapInfoWindow id="infoWindow">
+                                        <p:outputPanel style="text-align: center; display: block; margin: auto">
+                                            <h:outputText value="#{alertBean.marker.title}" />
+                                        </p:outputPanel>
+                                    </p:gmapInfoWindow>
+                                </p:gmap>
+                                <p:commandButton value="Refresh Locations" actionListener="#{alertBean.updateMap}" update="map2" 
+                                     style="position: absolute; right: 50px; top: 15px"/>
+                                <f:metadata>
+                                    <f:viewParam name="q" value="#{alertBean.q}" />
+                                    <f:viewAction action="#{alertBean.init}"/>
+                                </f:metadata>
+                            </h:form>
+                        </p:column>
+                    </p:row>
+
+                </p:panelGrid>
+
+            </p:layoutUnit>
+
+            <p:layoutUnit position="south" size="60">
+
+                <div style="bottom: 5px;position: absolute;width: 100%;text-align: center;">
+                    <p:commandLink value="Privacy policy" style="font-size: 10px;color: black" 
+                                   action="/pages/lapool/privacy/privacy.xhtml?faces-redirect=true"/>
+                    <p:spacer width="25px"/>                   
+                    <p:commandLink value="Terms and conditions" style="font-size: 10px;color: black" 
+                                   action="/pages/lapool/terms/terms.xhtml?faces-redirect=true"/>
+                </div>
+
+                <div style="position: absolute;right: 10px;bottom: 5px">
+                    <h:outputLink value="http://www.facebook.com/hopordrop" target="_blank">
+                        <p:graphicImage value="/resources/images/facebook.png" />
+                    </h:outputLink>
+                    <p:spacer width="10px"/>
+                    <h:outputLink value="http://www.twitter.com/hopordropapp" target="_blank">
+                        <p:graphicImage value="/resources/images/twitter.png" />
+                    </h:outputLink>
+                </div>
+            </p:layoutUnit>
+
+        </p:layout>
+
+    </h:body>
+</html>

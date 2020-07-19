@@ -1,0 +1,179 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <link rel="icon" type="image/ico" href="/resources/images/favicon.ico"/>
+        <link rel="shortcut icon" type="image/x-icon" href="#{facesContext.externalContext.requestContextPath}/resources/images/favicon.ico"/>
+        <h:outputStylesheet name="css/default.css" />
+        <title>HOP OR DROP - Channels</title>
+    </h:head>
+    <h:body id="body">
+
+        <p:layout fullPage="true">
+
+            <p:layoutUnit position="north" size="90">
+                <p:panelGrid style="width: 100%;text-align: center">
+                    <p:row >
+                        <p:column style="border: 0px;">
+                            <h:link outcome="/default.xhtml?faces-redirect=true">
+                                <p:graphicImage value="/resources/images/icon_black.png"  height="60px"/>
+                            </h:link>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="west" style="width: 10%">
+                <h:form id="menuForm">
+                    <p:growl id="growl" autoUpdate="true" showDetail="true"/>
+
+                    <p:menu>
+                        <p:submenu label="Home">
+                            <p:menuitem value="Home"  icon="ui-icon-home" action="home?faces-redirect=true"/>
+                        </p:submenu>
+                        <p:submenu label="System" rendered="#{privilegeBean.viewSystemUserPriviledged}">
+                            <p:menuitem value="Add/Edit System User"  icon="ui-icon-disk" action="system_user?faces-redirect=true"/>
+                        </p:submenu>
+                        <p:submenu label="Channel" rendered="#{privilegeBean.viewChannelPriviledged}">
+                            <p:menuitem value="Add/Edit Channel" ajax="false" icon="ui-icon-disk" action="channel_edit?faces-redirect=true"/>
+                        </p:submenu>
+                        <p:submenu label="Settings">
+                            <p:menuitem actionListener="#{systemUserBean.logout}" ajax="false" value="Logout" icon="ui-icon-power"/>
+                        </p:submenu>
+
+                    </p:menu>
+                </h:form>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="center" >
+
+                <p:commandButton value="Add New Channel" onclick="PF('dlg_new_chn').show();" title="login"/>
+
+                <p:growl id="growl" sticky="true" showDetail="true" life="3000" for="growlChn"/>
+
+                <p:dialog header="Login" id="addChnDlg" widgetVar="dlg_new_chn" modal="true" resizable="false" appendTo="@(body)">
+                    <h:form id="newChnForm">
+                        <h:panelGrid columns="2" cellpadding="5">
+                            <h:outputLabel for="name" value="Name:" />
+                            <p:inputText id="name" value="#{editChannelBean.newChannel.name}" required="true" label="name" />
+
+                            <h:outputLabel for="descpTxt" value="Description" />
+                            <p:inputText id="descpTxt" value="#{editChannelBean.newChannel.description}" required="true" label="description" />
+
+                            <h:outputLabel for="domain" value="Domain" />
+                            <p:inputText id="domain" value="#{editChannelBean.newChannel.emailDomain}" required="true" label="description" />
+
+                            <h:outputLabel for="status" value="Status" />
+                            <p:selectOneMenu id="status" value="#{editChannelBean.newChannel.status}" style="width:150px">
+                                <f:selectItems value="#{editChannelBean.channelStatues}" 
+                                               var="status"
+                                               itemLabel="#{status}"
+                                               itemValue="#{editChannelBean.fetchChannelStatusAsInt(status)}"
+                                               />
+                            </p:selectOneMenu>
+
+                            <f:facet name="footer">
+                                <p:commandButton value="Save" 
+                                                 id="savebtn"
+                                                 ajax="true"
+                                                 update=":tableForm:channels addChnDlg"
+                                                 styleClass="ui-priority-primary"
+                                                 onsuccess="PF('dlg_new_chn').hide();"
+                                                 actionListener="#{editChannelBean.addNewChannel}"                                                />
+                            </f:facet>  
+                        </h:panelGrid>
+                    </h:form>
+                </p:dialog>
+
+                <p:separator style="width: 100%;height: 6px"/>
+
+                <h:form id="tableForm">
+
+                    <p:growl id="msgs" showDetail="true"/>
+
+                    <p:dataTable id="channels" 
+                                 var="chn" 
+                                 value="#{editChannelBean.lazyDataModel}"
+                                 editable="true" 
+                                 paginator="true"
+                                 rows="10"
+                                 rowsPerPageTemplate="5,10"
+                                 style="margin-bottom:20px"
+                                 lazy="true"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                                     >
+                        <f:facet name="header">
+                            Channels
+                        </f:facet>
+
+                        <p:ajax event="rowEdit" listener="#{editChannelBean.onRowEdit}" update=":tableForm:msgs :tableForm:channels" />
+                        <p:ajax event="rowEditCancel" listener="#{editChannelBean.onRowCancel}" update=":tableForm:msgs" />
+                        
+                        <p:column headerText="ID"  >
+                                <h:outputText value="#{chn.id}" />
+                        </p:column>
+
+                        <p:column headerText="Name" filterBy="#{chn.name}" sortBy="#{chn.name}">
+                            <p:cellEditor>
+                                <f:facet name="output"><h:outputText value="#{chn.name}" /></f:facet>
+                                <f:facet name="input"><p:inputText id="modelInput" value="#{chn.name}" label="Name" style="width:100%" maxlength="100" required="true"/></f:facet>
+                            </p:cellEditor>
+                        </p:column>
+
+                        <p:column headerText="Domain" filterBy="#{chn.emailDomain}" sortBy="#{chn.emailDomain}">
+                            <p:cellEditor>
+                                <f:facet name="output"><h:outputText value="#{chn.emailDomain}" /></f:facet>
+                                <f:facet name="input"><p:inputText value="#{chn.emailDomain}" style="width:100%" label="Domain" maxlength="50" required="true"/></f:facet>
+                            </p:cellEditor>
+                        </p:column>
+
+                        <p:column headerText="Description">
+                            <p:cellEditor>
+                                <f:facet name="output"><h:outputText value="#{chn.description}" /></f:facet>
+                                <f:facet name="input"><p:inputText value="#{chn.description}" style="width:100%" label="Description" maxlength="250" required="true"/></f:facet>
+                            </p:cellEditor>
+
+                        </p:column>
+
+                        <p:column headerText="Status">
+                            <p:cellEditor>
+                                <f:facet name="output"><h:outputText value="#{editChannelBean.fetchChannelStatusAsString(chn.status)}" /></f:facet>
+                                <f:facet name="input">
+                                    <h:selectOneMenu value="#{chn.status}" style="width:100%">
+                                        <f:selectItems value="#{editChannelBean.channelStatues}" 
+                                                       var="status" 
+                                                       itemLabel="#{status}" 
+                                                       itemValue="#{editChannelBean.fetchChannelStatusAsInt(status)}" />
+                                    </h:selectOneMenu>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+
+                        <p:column style="width:32px">
+                            <p:rowEditor />
+                        </p:column>
+                        
+                        
+                    </p:dataTable>
+
+                </h:form>
+                
+                <p:panel style="width: 100%">
+                    <p:outputLabel value="njnas das d aosj dasd aiufnrb"/>
+                </p:panel>
+                <p:spacer width="100" height="500"/>
+                <p:panel style="width: 100%">
+                    <p:outputLabel value="njnas das d aosj dasd aiufnrb"/>
+                </p:panel>
+                
+            </p:layoutUnit>
+
+
+        </p:layout>
+
+
+    </h:body>
+</html>
