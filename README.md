@@ -1,4 +1,4 @@
 # lapool core
-Server side source for ride sharing system www.hopordrop.com
+Server side source for ride sharing system 
 
 The server side code interacts with the a client like an Android application.
